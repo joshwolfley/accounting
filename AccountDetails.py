@@ -7,6 +7,7 @@ class AccountInfo(object):
         self.user_name = "User"
 
     def acc_info_menu(self):
+
         print("1 - view personal information")
         print("2 - Set up Account")
         print("3 - Return to main configuration")
@@ -25,7 +26,6 @@ class AccountInfo(object):
                     print(f"Company Name: {self.company_name}")
                 else:
                     print("Account is not set up yet.")
-
             elif user_input == "2":
                 while user_input != "y":
                     self.user_name = input("What is your name?")

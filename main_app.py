@@ -1,11 +1,11 @@
-from Chart_of_Accounts_Controller import ApplicationController
+from Chart_of_Accounts_Controller import ChartOfAccountsApp
 from AccountDetails import AccountInfo
 
 
 class Configuration(object):
 
     def __init__(self):
-        self.chart_of_accounts = ApplicationController()
+        self.chart_of_accounts = ChartOfAccountsApp()
         self.account_info = AccountInfo()
 
     def run(self):
@@ -33,7 +33,7 @@ class Configuration(object):
             elif user_input == "3":
                 pass  # Do something
 
-            elif user_input == "4":
+            elif user_input == "4":  # add functionality into object
                 print("Pick your Color Scheme:")
                 print("1 - Arctic")
                 print("2 - Savanna")
@@ -42,13 +42,15 @@ class Configuration(object):
                 print("Color Scheme Saved!")
 
             elif user_input == "5":
-                break  # Finish
+
+                print("Congrats! You have successfully configured {}. Now the fun begins.".format(
+                    self.account_info.company_name))
+                break
+
+                # Go to actual accounting
 
             else:
                 input("Not an option, try again.")
-
-        print("Congrats! You have successfully configured {}. Now the fun begins.".format(self.account_info.company_name))
-
 
     def config_menu(self):
         print("")

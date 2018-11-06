@@ -1,7 +1,7 @@
-from Chart_Of_Accounts import Account
+from Account import Account
 
 
-class ApplicationController(object):
+class ChartOfAccountsApp(object):
     
     def __init__(self):
         

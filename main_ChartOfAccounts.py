@@ -1,4 +1,4 @@
-from Chart_Of_Accounts import Account
+from Account import Account
 
 def chart_menu():
 
@@ -63,11 +63,11 @@ while True:
 
             while num_of_accounts > i:
                 if account_num < list_of_accounts[i].acc_num:
-                    list_of_accounts.insert(i, (Accounts(acc_num=int(account_num), acc_name=account_name, acc_type=account_type)))
+                    list_of_accounts.insert(i, (Account(acc_num=int(account_num), acc_name=account_name, acc_type=account_type)))
                     break
                 i += 1
             else:
-                list_of_accounts.append(Accounts(acc_num=int(account_num), acc_name=account_name, acc_type=account_type))
+                list_of_accounts.append(Account(acc_num=int(account_num), acc_name=account_name, acc_type=account_type))
             add_more = input("Type \"Y\" to enter another account, otherwise click anything else")
             if add_more.upper() != "Y":
                 break
@@ -167,11 +167,11 @@ while True:
             print("Chart of accounts not deleted.")
     elif user_input == "6":
         list_of_accounts = [  # Default Chart
-            Accounts(acc_num=int(1000), acc_name="Cash", acc_type="Asset"),
-            Accounts(acc_num=int(2000), acc_name="Accounts Payable", acc_type="Liability"),
-            Accounts(acc_num=int(3000), acc_name="Retained Earnings", acc_type="Equity"),
-            Accounts(acc_num=int(4000), acc_name="Sales Revenue", acc_type="Income"),
-            Accounts(acc_num=int(5000), acc_name="Cost of Goods Sold", acc_type="Expense"),
+            Account(acc_num=int(1000), acc_name="Cash", acc_type="Asset"),
+            Account(acc_num=int(2000), acc_name="Accounts Payable", acc_type="Liability"),
+            Account(acc_num=int(3000), acc_name="Retained Earnings", acc_type="Equity"),
+            Account(acc_num=int(4000), acc_name="Sales Revenue", acc_type="Income"),
+            Account(acc_num=int(5000), acc_name="Cost of Goods Sold", acc_type="Expense"),
         ]
         print("Default Chart of accounts has been restored.")
     elif user_input == "7":
