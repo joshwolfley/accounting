@@ -61,7 +61,7 @@ class ChartOfAccountsApp(object):
             print("No Chart of Accounts Available!")
         else:
             print("---------------------------------------")
-            print("{} - {} - {} - {}".format("Account #", "Account Name", "Account Type", "Account Balance"))
+            print("{} - {} - {} - {}".format("Account #", "Account Name", "Account Type", "Beginning Balance"))
             print("")
             for account in self.chart_of_accounts:
                 print("{} - {} - {} - ${}".format(account.acc_num, account.acc_name, account.acc_type,

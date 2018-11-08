@@ -1,5 +1,6 @@
 from Chart_of_Accounts_Controller import ChartOfAccountsApp
 from AccountDetails import AccountInfo
+from Calculations import Calculations
 
 
 class Configuration(object):
@@ -7,6 +8,7 @@ class Configuration(object):
     def __init__(self):
         self.chart_of_accounts = ChartOfAccountsApp()
         self.account_info = AccountInfo()
+        self.calculations = Calculations()
 
     def run(self):
 
@@ -45,7 +47,7 @@ class Configuration(object):
 
                 print("Congrats! You have successfully configured {}. Now the fun begins.".format(
                     self.account_info.company_name))
-                break
+                self.calculations.run(self.account_info, self.chart_of_accounts.chart_of_accounts)
 
                 # Go to actual accounting
 
