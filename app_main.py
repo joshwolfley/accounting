@@ -11,7 +11,6 @@ class Configuration(object):
         self.calculations = Calculations()
 
     def run(self):
-
         print("")
         print("Welcome to Block Ledger! Lets check out {}.".format(self.account_info.company_name))
         print("")
@@ -44,12 +43,11 @@ class Configuration(object):
                 print("Color Scheme Saved!")
 
             elif user_input == "5":
+                # Go to actual accounting
 
                 print("Congrats! You have successfully configured {}. Now the fun begins.".format(
                     self.account_info.company_name))
-                self.calculations.run(self.account_info, self.chart_of_accounts.chart_of_accounts)
-
-                # Go to actual accounting
+                self.calculations.run(self.account_info.company_name, self.chart_of_accounts.chart_of_accounts)
 
             else:
                 input("Not an option, try again.")

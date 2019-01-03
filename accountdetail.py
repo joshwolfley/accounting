@@ -16,12 +16,9 @@ class AccountInfo(object):
 
         while True:
             self.acc_info_menu()
-
             user_input = input("")
-
             if user_input == "1":
                 if self.saved_info > 0:
-
                     print(f"Owner name: {self.user_name}")
                     print(f"Company Name: {self.company_name}")
                 else:

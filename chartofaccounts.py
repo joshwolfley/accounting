@@ -1,44 +1,76 @@
 from Account import Account
 
-def chart_menu():
 
-    print("")
-    print("Chart of Accounts Menu: ")
-    print("1 - View Current Chart of Accounts")
-    print("2 - Add an Account")
-    print("3 - Delete an Account")
-    print("4 - Update an Account Attribute")
-    print("5 - Clear Chart of Accounts")
-    print("6 - Return to Default Accounts")
-    print("7 - Exit")
-    print("")
+class ChartOfAccountsApp(object):
+    
+    def __init__(self):
+        
+        self.chart_of_accounts = [  # Default Chart
+            Account(acc_num=int(1000), acc_name="Cash", acc_type="Asset"),
+            Account(acc_num=int(2000), acc_name="Accounts Payable", acc_type="Liability"),
+            Account(acc_num=int(3000), acc_name="Retained Earnings", acc_type="Equity"),
+            Account(acc_num=int(4000), acc_name="Sales Revenue", acc_type="Income"),
+            Account(acc_num=int(5000), acc_name="Cost of Goods Sold", acc_type="Expense"),
+        ]
+    
+    def run(self):
+        
+        print("")
+        print("Chart of Accounts Menu: ")
+        print("1 - View Current Chart of Accounts")
+        print("2 - Add an Account")
+        print("3 - Delete an Account")
+        print("4 - Update an Account Attribute")
+        print("5 - Clear Chart of Accounts")
+        print("6 - Return to Default Accounts")
+        print("7 - Exit")
+        print("")
 
+        while True:
 
-user_input = "None"
+            user_input = input("Please choose an option")
 
-print("")
-print("Welcome to the chart of accounts!")
-print("What would you like to do?")
+            if user_input == "1":
+                self.option_one()
 
-while True:
-    chart_menu()
+            elif user_input == "2":
+                self.option_two()
+                
+            elif user_input == "3":
+                self.option_three()
+                
+            elif user_input == "4":
+                self.option_four()
+                
+            elif user_input == "5":
+                self.option_five()
+                
+            elif user_input == "6":
+                self.option_six()
+                
+            elif user_input == "7":
+                break
+            else:
+                self.chart_menu()
 
-    user_input = input("Please choose an option")
-
-    if user_input == "1":
-        if list_of_accounts == []:
+    
+    def option_one(self):
+        
+        if self.chart_of_accounts == []:
             print("")
             print("No Chart of Accounts Available!")
         else:
             print("---------------------------------------")
             print("{} - {} - {} - {}".format("Account #", "Account Name", "Account Type", "Account Balance"))
             print("")
-            for account in list_of_accounts:
+            for account in self.chart_of_accounts:
                 print("{} - {} - {} - ${}".format(account.acc_num, account.acc_name, account.acc_type,
                                                   account.acc_balance))
             print("---------------------------------------")
-
-    elif user_input == "2":
+            
+            
+    def option_two(self):
+        
         while True:
             while True:
                 account_num = 0
@@ -48,7 +80,7 @@ while True:
                     print("Account # cannot contain letters")
                     break
                 num_in_use = 0
-                for account in list_of_accounts:
+                for account in self.chart_of_accounts:
                     if account.acc_num == account_num:
                         print("Account # already in use. Try again")
                         num_in_use = 1
@@ -59,19 +91,23 @@ while True:
             account_name = input("Account Name")
             account_type = input("Account Type")
             i = 0
-            num_of_accounts = len(list_of_accounts)
+            num_of_accounts = len(self.chart_of_accounts)
 
             while num_of_accounts > i:
-                if account_num < list_of_accounts[i].acc_num:
-                    list_of_accounts.insert(i, (Account(acc_num=int(account_num), acc_name=account_name, acc_type=account_type)))
+                if account_num < self.chart_of_accounts[i].acc_num:
+                    self.chart_of_accounts.insert(i, (
+                        Account(acc_num=int(account_num), acc_name=account_name, acc_type=account_type)))
                     break
                 i += 1
             else:
-                list_of_accounts.append(Account(acc_num=int(account_num), acc_name=account_name, acc_type=account_type))
+                self.chart_of_accounts.append(
+                    Account(acc_num=int(account_num), acc_name=account_name, acc_type=account_type))
             add_more = input("Type \"Y\" to enter another account, otherwise click anything else")
             if add_more.upper() != "Y":
                 break
-    elif user_input == "3":
+                
+    def option_three(self):
+        
         removed = 0
         delete_num = 0
         try:
@@ -79,14 +115,16 @@ while True:
         except ValueError:
             print("Account # cannot contain letters")
         if delete_num != 0:
-            for account in list_of_accounts:
+            for account in self.chart_of_accounts:
                 if account.acc_num == delete_num:
-                    list_of_accounts.remove(account)
+                    self.chart_of_accounts.remove(account)
                     print("Account #{} Removed!".format(delete_num))
                     removed = 1
         if removed == 0 and delete_num != 0:
             print("Sorry, there is no account #{}".format(delete_num))
-    elif user_input == "4":
+            
+    def option_four(self):
+        
         updated = 0
         update_num = 0
         try:
@@ -94,11 +132,13 @@ while True:
         except ValueError:
             print("Account # cannot contain letters and must be a whole number greater than 0")
             updated = 1
-        for account in list_of_accounts:
+        for account in self.chart_of_accounts:
             if account.acc_num == update_num:
                 print("")
-                print("{} - {} - {} - {}".format("Account #", "Account Name", "Account Type", "Account Balance"))
-                print("{} - {} - {} - ${}".format(account.acc_num, account.acc_name, account.acc_type, account.acc_balance))
+                print(
+                    "{} - {} - {} - {}".format("Account #", "Account Name", "Account Type", "Account Balance"))
+                print("{} - {} - {} - ${}".format(account.acc_num, account.acc_name, account.acc_type,
+                                                  account.acc_balance))
                 print("")
                 print("What attribute would you like to update for Acc # {}".format(update_num))
                 print("1 - Account #")
@@ -120,7 +160,7 @@ while True:
                         print("Sorry, the account number must be greater than 0")
                         updated = 1
                         break
-                    for accounts in list_of_accounts:
+                    for accounts in self.chart_of_accounts:
                         if accounts.acc_num == new_acc_num:
                             duplicate += 1
                     if duplicate == 1:
@@ -129,8 +169,9 @@ while True:
                     else:
                         account.acc_num = new_acc_num
                         print("Account # Changed!")
-                        sorted_list = sorted(list_of_accounts, key=lambda Accounts: Accounts.acc_num, reverse=False)
-                        list_of_accounts = sorted_list
+                        sorted_list = sorted(self.chart_of_accounts, key=lambda Accounts: Accounts.acc_num,
+                                             reverse=False)
+                        self.chart_of_accounts = sorted_list
                         updated = 1
                 elif update == "2":
                     new_acc_name = input("Please enter new account name: ")
@@ -158,23 +199,36 @@ while True:
                     updated = 1
         if updated == 0:
             print("Not a valid acc #")
-    elif user_input == "5":
+            
+    def option_five(self):
+        
         delete_all = input("Are you sure you want to delete your chart of accounts? Type \"Y\" to proceed ")
         if delete_all.upper() == "Y":
-            list_of_accounts = []
+            self.chart_of_accounts = []
             print("Chart of Accounts Deleted!")
         else:
             print("Chart of accounts not deleted.")
-    elif user_input == "6":
-        list_of_accounts = [  # Default Chart
+            
+    def option_six(self):
+        self.chart_of_accounts = [  # Default Chart
             Account(acc_num=int(1000), acc_name="Cash", acc_type="Asset"),
             Account(acc_num=int(2000), acc_name="Accounts Payable", acc_type="Liability"),
             Account(acc_num=int(3000), acc_name="Retained Earnings", acc_type="Equity"),
             Account(acc_num=int(4000), acc_name="Sales Revenue", acc_type="Income"),
             Account(acc_num=int(5000), acc_name="Cost of Goods Sold", acc_type="Expense"),
         ]
+
         print("Default Chart of accounts has been restored.")
-    elif user_input == "7":
-        break
-    else:
-        print("Not an option. Here are the available options:")
+
+    def chart_menu(self):
+
+        print("")
+        print("Chart of Accounts Menu: ")
+        print("1 - View Current Chart of Accounts")
+        print("2 - Add an Account")
+        print("3 - Delete an Account")
+        print("4 - Update an Account Attribute")
+        print("5 - Clear Chart of Accounts")
+        print("6 - Return to Default Accounts")
+        print("7 - Exit")
+        print("")
