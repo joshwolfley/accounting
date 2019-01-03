@@ -1,16 +1,17 @@
-from Account import Account
-from AccountDetails import AccountInfo
-from Entries import Entry
+from accounts import Account
+from accountdetail import AccountInfo
+from entries import Entry
 import datetime
 from typing import List
+from calculations import Calculations
 
 
-
-class Calculations(object):
+class PrintStatements(object):
 
     def __init__(self):
         self.data = []
         self.tax_rate = .35
+        self.calculations = Calculations()
 
     def run(self, account_info, chart_of_accounts):
 
@@ -70,12 +71,9 @@ class Calculations(object):
                                                   round(account.acc_balance, 2)))
             print("---------------------------------------")
 
-    def option_two(self, company_name, chart_of_accounts):
+    def option_two(self, company_name: str, chart_of_accounts: List[Account]) -> int:
 
         while True:
-            total_debs = 0
-            total_creds = 0
-            entry_type = None
             print("Debit or Credit? Type \"D\" for Debit or \"C\" for Credit")
             deb_or_cred = input("")
             if deb_or_cred.upper() == "D":
@@ -116,27 +114,21 @@ class Calculations(object):
             self.data.append(Entry(type=entry_type, amount=float(entry_amount), account=entry_account.upper(), day=entry_day,
                               month=entry_month, year=entry_year, entry_date=entry_date.date()))
 
-            for entry in self.data:  # Do debits and credits equal?
-                if entry.type == "DEBIT":
-                    total_debs += entry.amount
-                else:
-                    total_creds += entry.amount
-            entry_diff = total_debs - total_creds
-
-            if total_creds != total_debs:
+            entry_diff = self.calculations.total_debs_and_creds((self.data))
+            if entry_diff != 0:
                 print("Debits and Credits do not equal, add another entry? (The difference is {})".format(entry_diff))
                 another_entry = input("Do you want to add more entries? Y/N")
                 if another_entry.upper() == "Y":
                     print("")
                 elif another_entry.upper() == "N":
                     break
+                else:
+                    print("Wrong answer")
+                    break
             else:
                 break
 
     def option_three(self, company_name, chart_of_accounts):
-        net_income = 0
-        total_assets = 0
-        total_liab_and_equity = 0
         print("")
         print("2018 Year End Balance Sheet for {}".format(company_name))
         print("Balance Sheet as of March 31, 2018")
@@ -145,77 +137,46 @@ class Calculations(object):
         for account in chart_of_accounts:
             if account.acc_type == "Asset":
                 print(f'{account.acc_name}:   ${round(account.acc_balance, 2)}')
-                total_assets += account.acc_balance
         print("-------------------")
-        print("Total Assets:   ${}".format(total_assets))
+        print("Total Assets:   ${}".format(self.calculations.total_assets(chart_of_accounts)))
         print("")
         print("Liabilities:")
         for account in chart_of_accounts:
             if account.acc_type == "Liability":
                 print(f'{account.acc_name}:   ${round(account.acc_balance, 2)}')
-                total_liab_and_equity += account.acc_balance
         print("")
         print("Equity:")
         for account in chart_of_accounts:
             if account.acc_type == "Equity" and account.acc_name != "Retained Earnings":
                 print(f'{account.acc_name}:   ${round(account.acc_balance, 2)}')
-                total_liab_and_equity += account.acc_balance
-        for account in chart_of_accounts:
-            if account.acc_name == "Retained Earnings":
-                retained_earnings = account.acc_balance
-        for account in chart_of_accounts:
-            if account.acc_type == "Income":
-                net_income += account.acc_balance
-            elif account.acc_type == "Expense":
-                net_income -= account.acc_balance
-        # net_income = (net_income * (1 - self.tax_rate))
-        retained_earnings += net_income
-        total_liab_and_equity += retained_earnings
-        print(f"Retained Earnings:   ${retained_earnings}")
+        print(f"Retained Earnings:   ${self.calculations.retained_earnings(chart_of_accounts)}")
 
         print("-------------------")
-        print("Total Liabilities and Owners Equity:   ${}".format(total_liab_and_equity))
+        print("Total Liabilities and Owners Equity:   ${}".format(self.calculations.total_equity(chart_of_accounts) +
+                                                                  self.calculations.total_liabilities(chart_of_accounts)))
         print("------------------------------")
         print("")
 
-    def calc_gross_
-
-
-
-    def calc_net_income(self):
-
-
-
-
     def option_four(self, company_name, chart_of_accounts):
-        gross_margin = 0
+
         print("2018 Income Statement for {}".format(company_name))
         print("------------------------------")
         print("Income:")
         for account in chart_of_accounts:
             if account.acc_name == "Sales Revenue":
-                print(f'{account.acc_name}:   ${account.acc_balance}')
-                gross_margin += account.acc_balance
-        for account in chart_of_accounts:
-            if account.acc_name == "Cost of Goods Sold":
                 print(f'{account.acc_name}:   ${round(account.acc_balance, 2)}')
-                gross_margin -= account.acc_balance
-        print(f"Gross Margin:   ${gross_margin}")
+            elif account.acc_name == "Cost of Goods Sold":
+                print(f'{account.acc_name}:   ${round(account.acc_balance, 2)}')
+        print(f'Gross Margin:   ${self.calculations.gross_margin(chart_of_accounts)}')
         print("-------------------")
         print("Operating Expenses:")
-        income_before_taxes = gross_margin
         for account in chart_of_accounts:
             if account.acc_type == "Expense" and account.acc_name != "Cost of Goods Sold":
                 print(f'{account.acc_name}:    ${round(account.acc_balance, 2)}')
-                income_before_taxes -= account.acc_balance
-        print(f"Income Before Taxes:   ${income_before_taxes}")
-        tax_expense = income_before_taxes * self.tax_rate
-        net_income = income_before_taxes - tax_expense
-        print("Tax Expense:   ${}".format(round(tax_expense, 2)))
+        print(f"Income Before Taxes:   ${self.calculations.income_before_taxes(chart_of_accounts)}")
+        print("Tax Expense:   ${}".format(self.calculations.tax_expense(chart_of_accounts, self.tax_rate)))
         print("")
-        print("Net Income:   ${}".format(round(net_income, 2)))
-        print("-------------------")
-        print("")
+        print("Net Income:   ${}".format(self.calculations.net_income(chart_of_accounts, self.tax_rate)))
         print("------------------------------")
 
     def option_six(self):

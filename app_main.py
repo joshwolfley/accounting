@@ -1,14 +1,14 @@
-from Chart_of_Accounts_Controller import ChartOfAccountsApp
-from AccountDetails import AccountInfo
-from Calculations import Calculations
+from chartofaccounts import ChartOfAccounts
+from accountdetail import AccountInfo
+from printstatements import PrintStatements
 
 
 class Configuration(object):
 
     def __init__(self):
-        self.chart_of_accounts = ChartOfAccountsApp()
+        self.chart_of_accounts = ChartOfAccounts()
         self.account_info = AccountInfo()
-        self.calculations = Calculations()
+        self.calculations = PrintStatements()
 
     def run(self):
         print("")
